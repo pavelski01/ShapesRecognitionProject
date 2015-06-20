@@ -1,0 +1,50 @@
+<project 
+	xmlns="http://maven.apache.org/POM/4.0.0" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>gui</groupId>
+	<artifactId>recognizer</artifactId>
+	<version>1.0</version>
+	<packaging>jar</packaging>
+	<name>recognizer</name>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<build>
+	    <plugins>
+	        <plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-jar-plugin</artifactId>
+	            <configuration>
+	                <archive>
+	                	<addMavenDescriptor>false</addMavenDescriptor>
+                        <compress>true</compress>
+	                    <manifest>
+	                    	<addClasspath>true</addClasspath>
+	                        <mainClass>gui.RecognitionProject</mainClass>
+	                    </manifest>
+	                </archive>
+	            </configuration>
+	        </plugin>
+	    </plugins>
+	</build>
+	<profiles>
+		<profile>
+	  		<id>defaultProfile</id>
+	  		<build>
+		    		<finalName>name</finalName>
+		    		<resources>
+		      			<resource>
+		        			<directory>${basedir}/src/main/java/icon</directory>
+		        			<filtering>false</filtering>
+		        			<includes>
+		          				<include>palette.gif</include>
+		        			</includes>
+		      			</resource>
+		    		</resources>
+	  		</build>
+		</profile>
+	</profiles>
+</project>
