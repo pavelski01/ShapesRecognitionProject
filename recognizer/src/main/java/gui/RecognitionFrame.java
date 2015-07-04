@@ -7,11 +7,16 @@ public class RecognitionFrame extends JFrame
 {	
 	public RecognitionFrame()
 	{
-		setTitle("Image Recognition");
-		setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		this.setTitle("Image Recognition");
+		this.setPreferredSize(
+			new Dimension(
+				RecognitionFrame.DEFAULT_WIDTH, 
+				RecognitionFrame.DEFAULT_HEIGHT
+			)
+		);
 		RecognitionPanel panel = new RecognitionPanel(this);
-		add(panel);
-		pack();
+		this.add(panel);
+		this.pack();
 	}
 	
 	public static final int DEFAULT_WIDTH = 1080;

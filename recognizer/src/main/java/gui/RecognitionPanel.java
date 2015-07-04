@@ -20,12 +20,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class RecognitionPanel extends JPanel
 {	
-	RecognitionPanel(JFrame frame)
+	RecognitionPanel(JFrame _frame)
 	{
-		this.recognitionFrame = frame;
-		setLayout(new BorderLayout());
+		this.recognitionFrame = _frame;
+		this.setLayout(new BorderLayout());
 		operatingPanel = new OperatingArea();
-		String classDirectory = null;		
 		classDirectory = RecognitionPanel.class.getProtectionDomain().
 			getCodeSource().getLocation().getPath();
 		classDirectory = classDirectory.substring(0, classDirectory.lastIndexOf(SEPARATOR));		
@@ -61,8 +60,8 @@ public class RecognitionPanel extends JPanel
 					);
 				
 			}
-			catch (IOException ioEX) {}
-			catch (Exception EX) {}
+			catch (IOException ioe) {}
+			catch (Exception e) {}
 	    if (image != null) chooser.setFileView(new FileIconView(filter, new ImageIcon(image)));
 	    if (classDirectory != null) chooser.setCurrentDirectory(new File(classDirectory + SEPARATOR + "PredefinedImages"));
 	    previewLabel = new ShapePreview(shapes[shapeIterator]);
@@ -125,7 +124,8 @@ public class RecognitionPanel extends JPanel
 		subButtonPanel.add(button);
 	}
 	
-	private String imgTitle = "test0.jpg";
+	private String classDirectory;
+	private String imgTitle = "test0.jpg";	
 	private int shapeIterator = 0;
 	private boolean isScaled;
 	private Image img;
@@ -141,7 +141,11 @@ public class RecognitionPanel extends JPanel
 	private ProcessEngine engine;
 	private ShapePreview previewLabel;
 	private ShapePreview.Shape[] shapes = 
-		{ ShapePreview.Shape.BOX, ShapePreview.Shape.CIRCLE, ShapePreview.Shape.TRIANGLE };
+	{
+		ShapePreview.Shape.BOX, 
+		ShapePreview.Shape.CIRCLE, 
+		ShapePreview.Shape.TRIANGLE 
+	};
 	private static String SEPARATOR = System.getProperty("file.separator");
 	private static final long serialVersionUID = 1L;
 }
