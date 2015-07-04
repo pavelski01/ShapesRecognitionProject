@@ -32,119 +32,132 @@ public class RecognitionPanel extends JPanel
 		this.operatingPanel = new OperatingArea();
 		String classDirectory = RecognitionPanel.class.getProtectionDomain().
 			getCodeSource().getLocation().getPath();
-		classDirectory = classDirectory.substring(0, classDirectory.lastIndexOf(SEPARATOR));		
+		classDirectory = classDirectory.substring(0, classDirectory.lastIndexOf(RecognitionPanel.SEPARATOR));		
 		try
 		{
-			this.img = ImageIO.read(new File(classDirectory + SEPARATOR + "recognizer-images" + SEPARATOR + this.imgTitle));
-			this.isScaled = this.operatingPanel.loadImage(this.img);			
-			this.imgTitle = this.isScaled ? this.imgTitle.concat(" (SCALED)") : this.imgTitle.concat("");
+			this.imgExtender = 
+				ImageIO.read(
+					new File(
+						classDirectory + RecognitionPanel.SEPARATOR + 
+							"recognizer-images" + RecognitionPanel.SEPARATOR + 
+								this.imgTitle
+						)
+				);
+			this.isScaled = this.operatingPanel.loadImage(this.imgExtender);			
+			this.imgTitle = this.isScaled ? this.imgTitle.concat(" (SCALED)") : this.imgTitle;
 			this.recognitionFrame.setTitle("Image Recognition - " + this.imgTitle);
 		} 
-		catch (IOException e) {}		
-		bottomPanel = new JPanel();
+		catch (IOException ioe) {}
+		catch (Exception e) {}
+		JPanel bottomPanel = new JPanel();
 		bottomPanel.setLayout(new GridLayout(1, 2));
-		buttonPanel = new JPanel();
+		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new GridLayout(2, 1));
 		buttonPanel.setBorder(BorderFactory.createEtchedBorder());
-		labelButtonPanel = new JLabel(shapes[shapeIterator].name() + " DETECTION", SwingConstants.CENTER);
-		labelButtonPanel.setBorder(BorderFactory.createEtchedBorder());
-		subButtonPanel = new JPanel();
+		this.labelButtonPanel =
+			new JLabel(
+				this.shapes[this.shapeIterator].name() + " DETECTION", 
+				SwingConstants.CENTER
+			);
+		this.labelButtonPanel.setBorder(BorderFactory.createEtchedBorder());
+		JPanel subButtonPanel = new JPanel();
 		subButtonPanel.setLayout(new GridLayout(1, 3));
 		subButtonPanel.setBorder(BorderFactory.createEtchedBorder());
-		chooser = new JFileChooser();
-		filter = new FileNameExtensionFilter("Image files", "bmp", "jpg", "jpeg", "gif");
-		chooser.setFileFilter(filter);
-		chooser.setAccessory(new ImagePreview(chooser));		
-		Image image = null;
+		this.chooser = new JFileChooser();
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("Image files", "bmp", "jpg", "jpeg", "gif");
+		this.chooser.setFileFilter(filter);
+		this.chooser.setAccessory(new ImagePreview(this.chooser));		
+		Image palette = null;
 		if (classDirectory != null)
 			try
 			{ 
-				image = 
+				palette = 
 					ImageIO.read(
-						RecognitionPanel.class.getResource(SEPARATOR + "icon" + SEPARATOR + "palette.gif")
+						RecognitionPanel.class.getResource(
+							RecognitionPanel.SEPARATOR + "icon" + 
+								RecognitionPanel.SEPARATOR + "palette.gif"
+						)
 					);
-				
 			}
 			catch (IOException ioe) {}
 			catch (Exception e) {}
-	    if (image != null) chooser.setFileView(new FileIconView(filter, new ImageIcon(image)));
-	    if (classDirectory != null) chooser.setCurrentDirectory(new File(classDirectory + SEPARATOR + "PredefinedImages"));
-	    previewLabel = new ShapePreview(shapes[shapeIterator]);
-	    listener = new ActionListener()
-	    {
+		if (palette != null) this.chooser.setFileView(new FileIconView(filter, new ImageIcon(palette)));
+		if (classDirectory != null) 
+			this.chooser.setCurrentDirectory(
+				new File(classDirectory + RecognitionPanel.SEPARATOR + "recognizer-images")
+			);
+		previewLabel = new ShapePreview(shapes[shapeIterator]);
+		listener = new ActionListener()
+		{
 			public void actionPerformed(ActionEvent event)
 			{
 				char action = event.getActionCommand().toLowerCase().charAt(0);
 				switch (action)
 				{
 					case 'p'://process
-						if (img != null)
+						if (RecognitionPanel.this.imgExtender != null)
 						{
-							engine = new ProcessEngine(img);
+							engine = new ProcessEngine(RecognitionPanel.this.imgExtender);
 							int[] count = engine.shapeRecognize(engine.shapeParse(), shapes[shapeIterator]);
 							String conjugation1 = ((count[0] == 0 || count[0] > 1) && shapes[shapeIterator] == ShapePreview.Shape.BOX) ? "ES" : 
 								(count[0] == 0 || count[0] > 1) ? "S" : "",
 									conjugation2 = (count[1] == 1) ? "" : "S";
-							labelButtonPanel.setText( count[0] + " " + shapes[shapeIterator].name() + 
+							RecognitionPanel.this.labelButtonPanel.setText( count[0] + " " + shapes[shapeIterator].name() + 
 								conjugation1 + " RECOGNIZED / " + count[1] + " OBJECT" + conjugation2
 									+ " DETECTED");
 							operatingPanel.loadImage(engine.afterProcess());													
 						}
 						break;
 					case 'l'://load
-						if (chooser.showOpenDialog(RecognitionPanel.this) == JFileChooser.APPROVE_OPTION)
+						if (RecognitionPanel.this.chooser.showOpenDialog(RecognitionPanel.this) == JFileChooser.APPROVE_OPTION)
 							try 
 							{
-								isScaled = operatingPanel.loadImage(img = ImageIO.read(new File(chooser.getSelectedFile().getPath())));
-								imgTitle = chooser.getSelectedFile().getName();
+								isScaled = operatingPanel.loadImage(RecognitionPanel.this.imgExtender = ImageIO.read(new File(chooser.getSelectedFile().getPath())));
+								imgTitle = RecognitionPanel.this.chooser.getSelectedFile().getName();
 								imgTitle = isScaled ? imgTitle.concat(" (SCALED)") : imgTitle.concat("");
 								recognitionFrame.setTitle(imgTitle.equals("") ? "Image Recognition" : ("Image Recognition - " + imgTitle));
-								labelButtonPanel.setText(shapes[shapeIterator].name() + " DETECTION");
+								RecognitionPanel.this.labelButtonPanel.setText(shapes[shapeIterator].name() + " DETECTION");
 							}
 							catch (IOException e) {}
 					   	break;
 					case 'n'://next
 						if (++shapeIterator >= shapes.length) shapeIterator = 0;
 						previewLabel.setForm(shapes[shapeIterator]);
-						labelButtonPanel.setText(shapes[shapeIterator].name() + " DETECTION");
+						RecognitionPanel.this.labelButtonPanel.setText(shapes[shapeIterator].name() + " DETECTION");
 						break;			
 				}
 			}
-		};	    
-		makeButton("Process");
-		makeButton("Load");
-		makeButton("Next");				
-		buttonPanel.add(labelButtonPanel);
+		};
+		this.makeButton("Process", subButtonPanel);
+		this.makeButton("Load", subButtonPanel);
+		this.makeButton("Next", subButtonPanel);				
+		buttonPanel.add(this.labelButtonPanel);
 		buttonPanel.add(subButtonPanel);		
 		bottomPanel.add(buttonPanel);
 		bottomPanel.add(previewLabel);		
-		add(operatingPanel, BorderLayout.CENTER);
-		add(bottomPanel, BorderLayout.SOUTH);
+		this.add(operatingPanel, BorderLayout.CENTER);
+		this.add(bottomPanel, BorderLayout.SOUTH);
 	}
-	
-	private void makeButton(String label)
+
+	private void makeButton(String _label, JPanel _panel)
 	{
-		JButton button = new JButton(label);
+		JButton button = new JButton(_label);
 		button.addActionListener(listener);
-		subButtonPanel.add(button);
+		_panel.add(button);
 	}
 	
-	private String imgTitle = "test0.jpg";	
+	private Image imgExtender;
+	private JFileChooser chooser;
+	private JFrame recognitionFrame;
+	private JLabel labelButtonPanel;
+	private String imgTitle = "test0.jpg";
 	private int shapeIterator = 0;
 	private boolean isScaled;
-	private Image img;
 	private ActionListener listener;
-	private FileNameExtensionFilter filter;
-	private JFileChooser chooser;
-	private JLabel labelButtonPanel;
-	private JPanel bottomPanel;
-	private JPanel buttonPanel;
-	private JPanel subButtonPanel;
-	private JFrame recognitionFrame;
 	private OperatingArea operatingPanel;
 	private ProcessEngine engine;
 	private ShapePreview previewLabel;
-	private ShapePreview.Shape[] shapes = 
+	private ShapePreview.Shape[] shapes =
 	{
 		ShapePreview.Shape.BOX, 
 		ShapePreview.Shape.CIRCLE, 
