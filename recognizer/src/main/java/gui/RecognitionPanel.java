@@ -24,16 +24,16 @@ public class RecognitionPanel extends JPanel
 	{
 		this.recognitionFrame = _frame;
 		this.setLayout(new BorderLayout());
-		operatingPanel = new OperatingArea();
-		classDirectory = RecognitionPanel.class.getProtectionDomain().
+		this.operatingPanel = new OperatingArea();
+		this.classDirectory = RecognitionPanel.class.getProtectionDomain().
 			getCodeSource().getLocation().getPath();
-		classDirectory = classDirectory.substring(0, classDirectory.lastIndexOf(SEPARATOR));		
+		this.classDirectory = this.classDirectory.substring(0, this.classDirectory.lastIndexOf(SEPARATOR));		
 		try
 		{
-			img = ImageIO.read(new File(classDirectory + SEPARATOR + "recognizer-images" + SEPARATOR + imgTitle));
-			isScaled = operatingPanel.loadImage(img);			
-			imgTitle = isScaled ? imgTitle.concat(" (SCALED)") : imgTitle.concat("");
-			recognitionFrame.setTitle("Image Recognition - " + imgTitle);
+			this.img = ImageIO.read(new File(this.classDirectory + SEPARATOR + "recognizer-images" + SEPARATOR + this.imgTitle));
+			this.isScaled = this.operatingPanel.loadImage(this.img);			
+			this.imgTitle = this.isScaled ? this.imgTitle.concat(" (SCALED)") : this.imgTitle.concat("");
+			this.recognitionFrame.setTitle("Image Recognition - " + this.imgTitle);
 		} 
 		catch (IOException e) {}		
 		bottomPanel = new JPanel();
