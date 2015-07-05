@@ -17,37 +17,44 @@ import javax.swing.SwingConstants;
 
 public class ShapePreview extends JLabel
 {
-	public ShapePreview(ShapePreview.Shape aForm)
+	public ShapePreview(ShapePreview.Shape _form)
 	{
 		super("", SwingConstants.CENTER);
-		setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
-		setBorder(BorderFactory.createEtchedBorder());
-		form = aForm;
+		this.setPreferredSize(new Dimension(ShapePreview.DEFAULT_WIDTH, ShapePreview.DEFAULT_HEIGHT));
+		this.setBorder(BorderFactory.createEtchedBorder());
+		this.form = _form;
 	}
 	
-	public void loadImage(String name)
+	public void loadImage(String _name)
 	{
-		ImageIcon icon = new ImageIcon(name);
-		if (icon.getIconWidth() > getPreferredSize().width) icon = new ImageIcon(icon.getImage().getScaledInstance(
-			(getPreferredSize().width == 0) ? (-1) : getPreferredSize().width, (-1), Image.SCALE_DEFAULT));
-		if (icon != null) setIcon(icon);
-		repaint();
+		ImageIcon icon = new ImageIcon(_name);
+		if (icon.getIconWidth() > this.getPreferredSize().width) 
+			icon = new ImageIcon(
+				icon.getImage().getScaledInstance(
+					(this.getPreferredSize().width == 0) ? 
+						(-1) : 
+						this.getPreferredSize().width, 
+					(-1), Image.SCALE_DEFAULT
+				)
+			);
+		if (icon != null) this.setIcon(icon);
+		this.repaint();
 	}
 	
-	public void setForm(Shape aShape)
+	public void setForm(Shape _shape)
 	{
-		form = aShape;
-		repaint();
+		this.form = _shape;
+		this.repaint();
 	}
 	
-	public void paintComponent(Graphics g)
+	public void paintComponent(Graphics _g)
 	{
-		Graphics2D g2 = (Graphics2D) g;	
+		Graphics2D g2 = (Graphics2D)_g;	
 		double side = 70;
-		double leftX = getWidth() / 2 - side / 2;
-		double topY = getHeight() / 2 - side / 2;
+		double leftX = this.getWidth() / 2 - side / 2;
+		double topY = this.getHeight() / 2 - side / 2;
 		Rectangle2D rectangle = new Rectangle2D.Double(leftX, topY, side, side);
-		switch (form)
+		switch (this.form)
 		{
 			case BOX:						
 				g2.setPaint(Color.BLACK);		
@@ -66,10 +73,10 @@ public class ShapePreview extends JLabel
 				g2.draw(ellipse);
 				break;
 			case TRIANGLE:
-				Point p1 = new Point(getWidth() / 2, (int) (getHeight() / 2 - (2 * side / 3)));
-				Point p2 = new Point((int) (getWidth() / 2 + (side / 2)), (int) (getHeight() / 2 + (side / 3)));
-				Point p3 = new Point((int) (getWidth() / 2 - (side / 2)), (int) (getHeight() / 2 + (side / 3)));
-				Polygon triangle = new Polygon(new int[] {p1.x, p2.x, p3.x}, new int[] {p1.y, p2.y, p3.y}, 3);
+				Point p1 = new Point((int)(this.getWidth() / 2), (int)(this.getHeight() / 2 - (2 * side / 3)));
+				Point p2 = new Point((int)(this.getWidth() / 2 + (side / 2)), (int)(this.getHeight() / 2 + (side / 3)));
+				Point p3 = new Point((int)(this.getWidth() / 2 - (side / 2)), (int)(this.getHeight() / 2 + (side / 3)));
+				Polygon triangle = new Polygon(new int[] { p1.x, p2.x, p3.x }, new int[] { p1.y, p2.y, p3.y }, 3);
 				g2.setPaint(Color.BLACK);
 				g2.fillPolygon(triangle);
 				g2.setPaint(Color.RED);
@@ -78,7 +85,7 @@ public class ShapePreview extends JLabel
 		}
 	}
 	
-	public enum Shape {BOX, CIRCLE, TRIANGLE}
+	public enum Shape { BOX, CIRCLE, TRIANGLE }
 	private Shape form;
 	public static final int DEFAULT_WIDTH = 180;
 	public static final int DEFAULT_HEIGHT = 150;

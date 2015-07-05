@@ -8,24 +8,31 @@ import javax.swing.JPanel;
 public class OperatingArea extends JPanel
 {	
 	public OperatingArea()
-	{ setBorder(BorderFactory.createEtchedBorder()); }
+	{ this.setBorder(BorderFactory.createEtchedBorder()); }
 	
-	public boolean loadImage(Image aImage)
+	public boolean loadImage(Image _image)
 	{
-		image = aImage;
-		repaint();
-		return (image.getWidth(null) > getWidth()) || (image.getHeight(null) > getHeight());
+		this.image = _image;
+		this.repaint();
+		return (this.image.getWidth(null) > this.getWidth()) || 
+			(this.image.getHeight(null) > this.getHeight());
 	}
 	
-	public void paintComponent(Graphics g)
+	public void paintComponent(Graphics _g)
 	{
-		if (image == null) return;
-		super.paintComponent(g);		
-		if ((image.getWidth(null) > getWidth()) || (image.getHeight(null) > getHeight())) 
-			image = image.getScaledInstance(
-				(getWidth() == 0) ? (-1) : getWidth(), (getHeight() == 0) ? (-1) : getHeight(), Image.SCALE_DEFAULT
-			);
-		g.drawImage(image, getWidth() / 2 - image.getWidth(null) / 2, getHeight() / 2 - image.getHeight(null) / 2, null);
+		if (this.image == null) return;
+		super.paintComponent(_g);//super keyword is critical
+		if ((this.image.getWidth(null) > this.getWidth()) || 
+				(this.image.getHeight(null) > this.getHeight())) 
+					this.image = this.image.getScaledInstance(
+						(this.getWidth() == 0) ? (-1) : this.getWidth(), 
+						(this.getHeight() == 0) ? (-1) : this.getHeight(), 
+						Image.SCALE_DEFAULT
+					);
+		_g.drawImage(
+			this.image, this.getWidth() / 2 - this.image.getWidth(null) / 2, 
+				this.getHeight() / 2 - this.image.getHeight(null) / 2, null
+		);
 	}
 	
 	private Image image;

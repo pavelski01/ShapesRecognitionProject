@@ -7,15 +7,15 @@ import javax.swing.filechooser.FileView;
 
 public class FileIconView extends FileView
 {
-	public FileIconView(FileFilter aFilter, Icon anIcon)
+	public FileIconView(FileFilter _filter, Icon _icon)
 	{
-		filter = aFilter;
-		icon = anIcon;
+		this.filter = _filter;
+		this.icon = _icon;
 	}
 	
-	public Icon getIcon(File file)
+	public Icon getIcon(File _file)
 	{
-		if (!file.isDirectory() && filter.accept(file)) return icon;
+		if (!_file.isDirectory() && this.filter.accept(_file)) return this.icon;
 		else return null;
 	}
 	

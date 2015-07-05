@@ -13,34 +13,38 @@ import javax.swing.SwingConstants;
 
 public class ImagePreview extends JLabel
 {	
-	public ImagePreview(JFileChooser chooser)
+	public ImagePreview(JFileChooser _chooser)
 	{
 		super("", SwingConstants.CENTER);
-		setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
-		setBorder(BorderFactory.createEtchedBorder());
-		chooser.addPropertyChangeListener(new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent event)
+		this.setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+		this.setBorder(BorderFactory.createEtchedBorder());
+		_chooser.addPropertyChangeListener(
+			new PropertyChangeListener()
 			{
-				if (event.getPropertyName() == JFileChooser.SELECTED_FILE_CHANGED_PROPERTY)
+				public void propertyChange(PropertyChangeEvent _event)
 				{
-					File file = (File) event.getNewValue();
-					if (file == null)
+					if (_event.getPropertyName() == JFileChooser.SELECTED_FILE_CHANGED_PROPERTY)
 					{
-						setIcon(null);
-						return;
+						File file = (File)_event.getNewValue();
+						if (file == null)
+						{
+							ImagePreview.this.setIcon(null);
+							return;
+						}
+						ImageIcon icon = new ImageIcon(file.getPath());
+						if (icon.getIconWidth() > ImagePreview.this.getPreferredSize().width) 
+							icon = new ImageIcon(
+								icon.getImage().getScaledInstance(
+									getPreferredSize().width, 
+									-1, 
+									Image.SCALE_DEFAULT
+								)
+							);
+						ImagePreview.this.setIcon(icon);
 					}
-					ImageIcon icon = new ImageIcon(file.getPath());
-					if (icon.getIconWidth() > getPreferredSize().width) 
-						icon = new ImageIcon(
-							icon.getImage().getScaledInstance(
-								getPreferredSize().width, -1, 
-								Image.SCALE_DEFAULT
-							)
-						);
-					setIcon(icon);
 				}
 			}
-		});
+		);
 	}
 	
 	public static final int DEFAULT_WIDTH = 100;

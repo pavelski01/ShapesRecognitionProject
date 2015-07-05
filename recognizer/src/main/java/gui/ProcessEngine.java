@@ -18,17 +18,22 @@ import java.util.TreeSet;
 
 public class ProcessEngine
 {	
-	public ProcessEngine(Image aImage)
+	public ProcessEngine(Image _image)
 	{
-		image = aImage;
-		bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);		
-		bufferedImage.getGraphics().drawImage(image, 0, 0, null);		
-		filter();
-		graphicsObject = (Graphics2D) bufferedImage.getGraphics();
-		rotate();
-		raster = bufferedImage.getRaster();
-		matrix = new boolean[bufferedImage.getHeight(null)][bufferedImage.getWidth(null)];
-		binarize();
+		this.image = _image;
+		this.bufferedImage = 
+			new BufferedImage(
+				this.image.getWidth(null), 
+				this.image.getHeight(null), 
+				BufferedImage.TYPE_INT_ARGB
+			);		
+		this.bufferedImage.getGraphics().drawImage(this.image, 0, 0, null);		
+		this.filter();
+		this.graphicsObject = (Graphics2D)this.bufferedImage.getGraphics();
+		this.rotate();
+		this.raster = this.bufferedImage.getRaster();
+		this.matrix = new boolean[this.bufferedImage.getHeight(null)][this.bufferedImage.getWidth(null)];
+		this.binarize();
 	}
 	
 	public Map<String, LinkedList<TreeSet<Integer[]>>> shapeParse()
