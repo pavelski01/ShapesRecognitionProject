@@ -2,4 +2,4 @@ ShapesRecognitionProject
 ===================
 
 Description: Recognition of basic geometric figures (scholar)  
-Needs: recognizor-images directory with image resources  
+Needs: Exported as runnable jar archive, recognizor-images directory with image resources  
