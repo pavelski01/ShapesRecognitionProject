@@ -39,24 +39,27 @@ public class ProcessEngine
 	public Map<String, LinkedList<TreeSet<Integer[]>>> shapeParse()
 	{
 		int number = 0;
-		boolean[][] stencil = new boolean[matrix.length][matrix[0].length];
-		for (int j = 0; j < matrix.length; ++j)
-			for (int i = 0; i < matrix[j].length; ++i)
-				stencil[j][i] = matrix[j][i];
-		map = new HashMap<String, LinkedList<TreeSet<Integer[]>>>();		
-		comparator = new Comparator<Integer[]>()
+		boolean[][] stencil = new boolean[this.matrix.length][this.matrix[0].length];
+		for (int j = 0; j < this.matrix.length; ++j)
+			for (int i = 0; i < this.matrix[j].length; ++i)
+				stencil[j][i] = this.matrix[j][i];
+		Map<String, LinkedList<TreeSet<Integer[]>>> map = 
+			new HashMap<String, LinkedList<TreeSet<Integer[]>>>();		
+		Comparator<Integer[]> comparator = new Comparator<Integer[]>()
 		{
-			public int compare(Integer[] a, Integer[] b)
+			public int compare(Integer[] _a, Integer[] _b)
 			{
-				if (a[0] - b[0] != 0) return a[0] - b[0];
-				else if (a[1] - b[1] != 0) return a[1] - b[1];
+				if (_a[0] - _b[0] != 0) return _a[0] - _b[0];
+				else if (_a[1] - _b[1] != 0) return _a[1] - _b[1];
 				else return 0;
 			}					
-		};		
+		};
+		String figureKey = null;
 		for (int y = 0; y < stencil.length; ++y)
 			for (int x = 0; x < stencil[y].length; ++x)
 			{				
-				if (stencil[y][x]) {						
+				if (stencil[y][x]) 
+				{						
 					int top_y = y, bottom_y = 0, left_x = x, right_x = 0, iterator = 0;		
 					figureKey = Integer.toString(number);									
 					for (int x1 = left_x; stencil[top_y][x1]; ++x1) ++iterator;					
@@ -88,10 +91,13 @@ public class ProcessEngine
 		return map;
 	}
 	
-	public int[] shapeRecognize(Map<String, LinkedList<TreeSet<Integer[]>>> map, ShapePreview.Shape shape)
+	public int[] shapeRecognize(
+		Map<String, LinkedList<TreeSet<Integer[]>>> _map, 
+		ShapePreview.Shape _shape
+	)
 	{
 		int found = 0, object = 0;
-		for (Map.Entry<String, LinkedList<TreeSet<Integer[]>>> entry : map.entrySet())
+		for (Map.Entry<String, LinkedList<TreeSet<Integer[]>>> entry : _map.entrySet())
 		{
 			++object;
 			LinkedList<TreeSet<Integer[]>> valuesList = entry.getValue();
@@ -148,102 +154,102 @@ public class ProcessEngine
 			F_x = B_x;
 			H_y = D_y;
 			H_x = G_x;
-			graphicsObject.setPaint(Color.RED);
-			graphicsObject.setStroke(new BasicStroke(13.0F));
-			graphicsObject.drawLine(A_x, A_y, A_x, A_y); 
-			graphicsObject.drawLine(B_x, B_y, B_x, B_y);
-			graphicsObject.drawLine(C_x, C_y, C_x, C_y);
-			graphicsObject.drawLine(D_x, D_y, D_x, D_y);
-			graphicsObject.drawLine(E_x, E_y, E_x, E_y);
-			graphicsObject.drawLine(F_x, F_y, F_x, F_y);
-			graphicsObject.drawLine(G_x, G_y, G_x, G_y);
-			graphicsObject.drawLine(H_x, H_y, H_x, H_y);			
+			this.graphicsObject.setPaint(Color.RED);
+			this.graphicsObject.setStroke(new BasicStroke(13.0F));
+			this.graphicsObject.drawLine(A_x, A_y, A_x, A_y); 
+			this.graphicsObject.drawLine(B_x, B_y, B_x, B_y);
+			this.graphicsObject.drawLine(C_x, C_y, C_x, C_y);
+			this.graphicsObject.drawLine(D_x, D_y, D_x, D_y);
+			this.graphicsObject.drawLine(E_x, E_y, E_x, E_y);
+			this.graphicsObject.drawLine(F_x, F_y, F_x, F_y);
+			this.graphicsObject.drawLine(G_x, G_y, G_x, G_y);
+			this.graphicsObject.drawLine(H_x, H_y, H_x, H_y);			
 			for (Integer[] points : set2)
 			{
 				center_y = points[0];
 				center_x = points[1];
 			}
-			graphicsObject.setPaint(Color.WHITE);
-			graphicsObject.drawLine(center_x, center_y, center_x, center_y);
+			this.graphicsObject.setPaint(Color.WHITE);
+			this.graphicsObject.drawLine(center_x, center_y, center_x, center_y);
 			int distance_y = (center_y - B_y) / 6, distance_x = (B_x - A_x) / 3;
 			int delta = (int) ( (center_x - A_x) * ( 2 - Math.sqrt(2) ) ) / 4;			
-			if (shape != ShapePreview.Shape.TRIANGLE)
+			if (_shape != ShapePreview.Shape.TRIANGLE)
 			{
-				graphicsObject.setPaint(Color.GREEN);
-				graphicsObject.drawLine(A_x + delta, A_y + delta, A_x + delta, A_y + delta);
-				graphicsObject.drawLine(B_x, B_y + delta, B_x, B_y + delta);
-				graphicsObject.drawLine(C_x - delta, C_y + delta, C_x - delta, C_y + delta);
-				graphicsObject.drawLine(D_x - delta, D_y, D_x - delta, D_y);
-				graphicsObject.drawLine(E_x - delta, E_y - delta, E_x - delta, E_y - delta);
-				graphicsObject.drawLine(F_x, F_y - delta, F_x, F_y - delta);
-				graphicsObject.drawLine(G_x + delta, G_y - delta, G_x + delta, G_y - delta);
-				graphicsObject.drawLine(H_x + delta, H_y, H_x + delta, H_y);
+				this.graphicsObject.setPaint(Color.GREEN);
+				this.graphicsObject.drawLine(A_x + delta, A_y + delta, A_x + delta, A_y + delta);
+				this.graphicsObject.drawLine(B_x, B_y + delta, B_x, B_y + delta);
+				this.graphicsObject.drawLine(C_x - delta, C_y + delta, C_x - delta, C_y + delta);
+				this.graphicsObject.drawLine(D_x - delta, D_y, D_x - delta, D_y);
+				this.graphicsObject.drawLine(E_x - delta, E_y - delta, E_x - delta, E_y - delta);
+				this.graphicsObject.drawLine(F_x, F_y - delta, F_x, F_y - delta);
+				this.graphicsObject.drawLine(G_x + delta, G_y - delta, G_x + delta, G_y - delta);
+				this.graphicsObject.drawLine(H_x + delta, H_y, H_x + delta, H_y);
 			}
 			else
 			{
-				graphicsObject.setPaint(Color.GREEN);
-				graphicsObject.drawLine(A_x + distance_x, A_y + distance_y, A_x + distance_x, A_y + distance_y);
-				graphicsObject.drawLine(B_x, B_y + distance_y, B_x, B_y + distance_y);
-				graphicsObject.drawLine(C_x - distance_x, C_y + distance_y, C_x - distance_x, C_y + distance_y);
-				graphicsObject.drawLine(E_x - distance_x, E_y - distance_y, E_x - distance_x, E_y - distance_y);				
-				graphicsObject.drawLine(F_x, F_y - (F_y - center_y) / 2, F_x, F_y - (F_y - center_y) / 2);
-				graphicsObject.drawLine(G_x + distance_x, G_y - distance_y, G_x + distance_x, G_y - distance_y);
+				this.graphicsObject.setPaint(Color.GREEN);
+				this.graphicsObject.drawLine(A_x + distance_x, A_y + distance_y, A_x + distance_x, A_y + distance_y);
+				this.graphicsObject.drawLine(B_x, B_y + distance_y, B_x, B_y + distance_y);
+				this.graphicsObject.drawLine(C_x - distance_x, C_y + distance_y, C_x - distance_x, C_y + distance_y);
+				this.graphicsObject.drawLine(E_x - distance_x, E_y - distance_y, E_x - distance_x, E_y - distance_y);				
+				this.graphicsObject.drawLine(F_x, F_y - (F_y - center_y) / 2, F_x, F_y - (F_y - center_y) / 2);
+				this.graphicsObject.drawLine(G_x + distance_x, G_y - distance_y, G_x + distance_x, G_y - distance_y);
 			}
-			switch (shape)
+			switch (_shape)
 			{
 				case BOX:
 					if 
 					(
-						matrix[ A_y + delta ][ A_x + delta ] &&
-							matrix[ B_y + delta ][B_x] &&
-								matrix[ C_y + delta ][ C_x - delta ] &&
-									matrix[D_y][D_x - delta] &&
-										matrix[ E_y - delta ][ E_x - delta ] &&
-											matrix[ F_y - delta ][F_x] &&
-												matrix[ G_y - delta ][ G_x + delta ] &&
-													matrix[H_y][ H_x + delta ]
+						this.matrix[ A_y + delta ][ A_x + delta ] &&
+							this.matrix[ B_y + delta ][B_x] &&
+								this.matrix[ C_y + delta ][ C_x - delta ] &&
+									this.matrix[D_y][D_x - delta] &&
+										this.matrix[ E_y - delta ][ E_x - delta ] &&
+											this.matrix[ F_y - delta ][F_x] &&
+												this.matrix[ G_y - delta ][ G_x + delta ] &&
+													this.matrix[H_y][ H_x + delta ]
 					)
 					{
 						++found;
-						graphicsObject.setPaint(Color.RED);
-						graphicsObject.drawLine(center_x - delta, center_y - delta, center_x + delta, center_y + delta);
-						graphicsObject.drawLine(center_x + delta, center_y - delta, center_x - delta, center_y + delta);
+						this.graphicsObject.setPaint(Color.RED);
+						this.graphicsObject.drawLine(center_x - delta, center_y - delta, center_x + delta, center_y + delta);
+						this.graphicsObject.drawLine(center_x + delta, center_y - delta, center_x - delta, center_y + delta);
 					}							
 					break;
 				case CIRCLE:
 					if 
 					(
-						!matrix[ A_y + delta ][ A_x + delta ] &&
-							matrix[ B_y + delta ][B_x] &&
-								!matrix[ C_y + delta ][ C_x - delta ] &&
-									matrix[D_y][D_x - delta] &&
-										!matrix[ E_y - delta ][ E_x - delta ] &&
-											matrix[ F_y - delta ][F_x] &&
-												!matrix[ G_y - delta ][ G_x + delta ] &&
-													matrix[H_y][ H_x + delta ]
+						!this.matrix[ A_y + delta ][ A_x + delta ] &&
+							this.matrix[ B_y + delta ][B_x] &&
+								!this.matrix[ C_y + delta ][ C_x - delta ] &&
+									this.matrix[D_y][D_x - delta] &&
+										!this.matrix[ E_y - delta ][ E_x - delta ] &&
+											this.matrix[ F_y - delta ][F_x] &&
+												!this.matrix[ G_y - delta ][ G_x + delta ] &&
+													this.matrix[H_y][ H_x + delta ]
 					)
 					{
 						++found;
-						graphicsObject.setPaint(Color.RED);
-						graphicsObject.drawLine(center_x - delta, center_y - delta, center_x + delta, center_y + delta);
-						graphicsObject.drawLine(center_x + delta, center_y - delta, center_x - delta, center_y + delta);
+						this.graphicsObject.setPaint(Color.RED);
+						this.graphicsObject.drawLine(center_x - delta, center_y - delta, center_x + delta, center_y + delta);
+						this.graphicsObject.drawLine(center_x + delta, center_y - delta, center_x - delta, center_y + delta);
 					}
 					break;
 				case TRIANGLE:
 					if
 					(
-						matrix[ A_y + distance_y ][ A_x + distance_x ] && 
-							matrix[ B_y + distance_y ][B_x] && 
-								matrix[ C_y + distance_y ][ C_x - distance_x ] && 
-									!matrix[ E_y - distance_y ][ E_x - distance_x ] && 
-										matrix[ F_y - (F_y - center_y) / 2 ][F_x] &&
-											!matrix[ G_y - distance_y ][ G_x + distance_x ]
+						this.matrix[ A_y + distance_y ][ A_x + distance_x ] && 
+							this.matrix[ B_y + distance_y ][B_x] && 
+								this.matrix[ C_y + distance_y ][ C_x - distance_x ] && 
+									!this.matrix[ E_y - distance_y ][ E_x - distance_x ] && 
+										this.matrix[ F_y - (F_y - center_y) / 2 ][F_x] &&
+											!this.matrix[ G_y - distance_y ][ G_x + distance_x ]
 					)
 					{
 						++found;
-						graphicsObject.setPaint(Color.RED);
-						graphicsObject.drawLine(center_x - delta, center_y - delta, center_x + delta, center_y + delta);
-						graphicsObject.drawLine(center_x + delta, center_y - delta, center_x - delta, center_y + delta);
+						this.graphicsObject.setPaint(Color.RED);
+						this.graphicsObject.drawLine(center_x - delta, center_y - delta, center_x + delta, center_y + delta);
+						this.graphicsObject.drawLine(center_x + delta, center_y - delta, center_x - delta, center_y + delta);
 					}
 					break;
 			}
@@ -254,21 +260,21 @@ public class ProcessEngine
 	public Image afterProcess()
 	{
 		rotate();
-		return (Image)bufferedImage;
+		return (Image)this.bufferedImage;
 	}
 	
 	private void binarize()
 	{	
 		int[] sample = new int[4];
-		for (int y = 0; y < bufferedImage.getHeight(null); ++y)
-			for (int x = 0; x < bufferedImage.getWidth(null); ++x)
+		for (int y = 0; y < this.bufferedImage.getHeight(null); ++y)
+			for (int x = 0; x < this.bufferedImage.getWidth(null); ++x)
 			{
-				raster.getPixel(x, y, sample);
+				this.raster.getPixel(x, y, sample);
 				sample[0] = (sample[0] + sample[1] + sample[2]) / 3;			
 				sample[0] = sample[1] = sample[2] = (sample[0] > 245) ? 255 : 0;
 				sample[3] = 255;
-				raster.setPixel(x, y, sample);
-				matrix[y][x] = (sample[0] == 0) ? true : false;
+				this.raster.setPixel(x, y, sample);
+				this.matrix[y][x] = (sample[0] == 0) ? true : false;
 			}
 	}
 	
@@ -280,28 +286,26 @@ public class ProcessEngine
 			-2f, 5f, -2f,
 			-1f, -2f, -1f
 		};
-		kernel = new Kernel(3, 3, elements);
-		C_operation = new ConvolveOp(kernel);
-		C_operation.filter(bufferedImage, null);
+		Kernel kernel = new Kernel(3, 3, elements);
+		ConvolveOp convolveOperation = new ConvolveOp(kernel);
+		convolveOperation.filter(this.bufferedImage, null);
 	}
 	
 	private void rotate()
 	{
-		transform = AffineTransform.getRotateInstance(Math.toRadians(180), image.getWidth(null) / 2, image.getHeight(null) / 2);
-		AT_operation = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);		
-		graphicsObject.drawImage(AT_operation.filter(bufferedImage, null), 0, 0, null);
+		AffineTransform transform = 
+			AffineTransform.getRotateInstance(
+				Math.toRadians(180), 
+				this.image.getWidth(null) / 2, 
+				this.image.getHeight(null) / 2
+			);
+		AffineTransformOp affineTransformoperation = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);		
+		this.graphicsObject.drawImage(affineTransformoperation.filter(this.bufferedImage, null), 0, 0, null);
 	}
 	
-	private boolean[][] matrix;
-	private String figureKey;
-	private Comparator<Integer[]> comparator;
-	private Map<String, LinkedList<TreeSet<Integer[]>>> map;	
-	private AffineTransform transform;
-	private AffineTransformOp AT_operation;
-	private Kernel kernel;
-	private ConvolveOp C_operation;
-	private Image image;
 	private BufferedImage bufferedImage;
 	private Graphics2D graphicsObject;
+	private Image image;
 	private WritableRaster raster;	
+	private boolean[][] matrix;	
 }
